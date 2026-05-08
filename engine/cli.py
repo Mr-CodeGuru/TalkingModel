@@ -479,7 +479,7 @@ def main():
     else:
         # Voice Mode loop
         import sounddevice as sd
-        print(f"{Style.SYSTEM}Voice streaming active. Speak now...{Style.RESET}\n")
+        print(f"{Style.H_MAG}Voice streaming active. Speak now...{Style.RESET}\n")
         try:
             with sd.RawInputStream(samplerate=16000, blocksize=8000, dtype='int16', channels=1, callback=audio_callback):
                 while True:
