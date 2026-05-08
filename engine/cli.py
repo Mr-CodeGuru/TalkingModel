@@ -18,6 +18,7 @@ import json
 import queue
 import argparse
 import threading
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -84,16 +85,15 @@ class Style:
 
 def print_box(title: str, lines: list[str], color: str = Style.H_CYN):
     """Prints a beautiful Shopify-style box in the terminal."""
-    # Calculate width
-    width = max(len(title) + 6, 50)
-    for line in lines:
-        # Strip ANSI codes for length calculation if needed, but for simple strings len is fine
-        width = max(width, len(line) + 4)
+    # Get terminal width dynamically
+    columns, _ = shutil.get_terminal_size(fallback=(80, 24))
+    width = columns - 2
+    if width < 40: width = 40
         
     print(f"{color}┏━ {Style.BOLD}{title}{Style.RESET}{color} " + "━" * (width - len(title) - 3) + Style.RESET)
     for line in lines:
         print(f"{color}┃{Style.RESET} {line}")
-    print(f"{color}┗" + "━" * (width + 1) + Style.RESET)
+    print(f"{color}┗" + "━" * (width - 1) + Style.RESET)
 
 # ── Global State ─────────────────────────────────────────────────────────────
 chat_memory: list[tuple[str, str]] = []
@@ -210,7 +210,8 @@ import textwrap
 
 def speak(text: str):
     # Use the boxed theme for Assistant responses
-    wrapped_lines = textwrap.wrap(text, width=60)
+    columns, _ = shutil.get_terminal_size(fallback=(80, 24))
+    wrapped_lines = textwrap.wrap(text, width=columns - 4)
     print_box("Assistant", wrapped_lines, Style.H_CYN)
     
     if not is_voice_mode:
@@ -473,6 +474,11 @@ def main():
                 if user_text.startswith('/'):
                     handle_command(user_text)
                 else:
+                    # Print user's text in a box
+                    columns, _ = shutil.get_terminal_size(fallback=(80, 24))
+                    wrapped_user = textwrap.wrap(user_text, width=columns - 4)
+                    print_box("You", wrapped_user, Style.H_GRN)
+                    
                     response = process_text(user_text)
                     speak(response)
         except KeyboardInterrupt:
