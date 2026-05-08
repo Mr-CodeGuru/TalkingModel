@@ -71,10 +71,24 @@ git clone https://github.com/Mr-CodeGuru/TalkingModel.git && cd TalkingModel && 
 ### What happens next?
 1. **Trust Prompt**: The script will ask if you trust the folder and wish to proceed with installation.
 2. **Automatic Environment**: It builds a Python virtual environment and installs dependencies automatically.
-3. **Global Command (Optional)**: It will ask if you want to create a global `tm` command so you can launch the app by just typing `tm` from anywhere!
-4. **Model Downloads**: Finally, it lets you select Text or Voice mode, and starts downloading the models with clean progress indicators.
+3. **Global `tm` Command**: It will ask if you want to create a global `tm` command. If you say yes, it will add a clean, deduplicated alias to your shell profile. You can then launch the app by just typing `tm` from anywhere!
+4. **Model Downloads**: Finally, it lets you select Text or Voice mode, and starts downloading the models automatically.
 
 ---
+
+## 🎮 In-Chat Commands
+
+While chatting in Text mode, you can use the following commands:
+
+| Command | Action |
+|---|---|
+| `/help` | Show available commands |
+| `/session` | Manage multiple chat sessions (Save, Load, Clear) |
+| `/additions` | Add your own local GGUF or Vosk models via symlinks |
+| `/quota` | View estimated context token usage |
+| `/model` | List and switch between downloaded LLM models |
+| `/voice` | List and switch between downloaded Vosk models |
+| `/exit` | Exit the application |
 
 ## 🧠 Model Management
 
