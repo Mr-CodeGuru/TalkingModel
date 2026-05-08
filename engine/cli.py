@@ -33,6 +33,18 @@ try:
 except ImportError:
     pass
 
+# Setup tab-completion for commands
+try:
+    import readline
+    _commands = ['/help', '/model', '/voice', '/quota', '/session', '/additions', '/exit']
+    def _completer(text, state):
+        options = [i for i in _commands if i.startswith(text)]
+        return options[state] if state < len(options) else None
+    readline.set_completer(_completer)
+    readline.parse_and_bind("tab: complete")
+except ImportError:
+    pass # Fallback for Windows or systems without readline
+
 from utils.paths import RECORD_FILE, ensure_directories
 from utils.model_manager import (
     ensure_gguf_model,
@@ -193,8 +205,8 @@ def process_text(user_text: str) -> str:
     global chat_memory
     
     system_prompt = (
-        "You are TM Engine, a highly advanced AI assistant. "
-        "Helpful, smart, and concise. Never pretend to be human."
+        "You are TM Engine, a highly advanced, ultra-intelligent AI assistant with a modern, sleek personality. "
+        "Provide creative, insightful, and brilliant answers. Be concise but impactful. Never pretend to be human."
     )
     
     prompt = f"System: {system_prompt}\n"
@@ -246,14 +258,27 @@ def handle_command(cmd_text: str):
         estimated_tokens = total_chars // 4
         percentage = (estimated_tokens / 2048) * 100
         
+        # Dynamic progress bar
+        bar_len = 20
+        filled_len = int(bar_len * min(percentage, 100) / 100)
+        bar = '█' * filled_len + '░' * (bar_len - filled_len)
+        
         print(f"\n{Style.BOLD}Context Quota Usage:{Style.RESET}")
         print(f"  Memory Turns: {len(chat_memory)}/{MAX_MEMORY_TURNS}")
         print(f"  Est. Tokens:  {estimated_tokens}/2048 ({percentage:.1f}%)")
-        print(f"  Status:       {'[||||||    ]' if percentage < 50 else '[||||||||||]'}\n")
+        print(f"  Status:       [{bar}]\n")
         
     elif command == "/session":
+        if chat_memory:
+            # Save the current session before clearing
+            session_file = Path(_PROJECT_ROOT) / "logs" / f"session_{int(time.time())}.txt"
+            with open(session_file, "w") as f:
+                for u, a in chat_memory:
+                    f.write(f"User: {u}\nAssistant: {a}\n\n")
+            print(f"\n{Style.H_GRN}✓ Session saved to logs/{session_file.name}{Style.RESET}")
+            
         chat_memory = []
-        print(f"\n{Style.H_GRN}✓ Session cleared. Memory is fresh.{Style.RESET}\n")
+        print(f"{Style.H_GRN}✓ New session started. Memory is fresh.{Style.RESET}\n")
         
     elif command == "/voice":
         is_voice_mode = not is_voice_mode

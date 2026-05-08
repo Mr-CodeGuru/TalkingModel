@@ -108,7 +108,6 @@ def _download_from_hf(hf_repo: str, hf_path: str, dest: Path, desc: str) -> None
             filename=hf_path,
             token=token,
             local_dir=str(dest.parent),
-            local_dir_use_symlinks=False,
         )
         # hf_hub_download places file at <local_dir>/<hf_path>
         # If the file landed at a subpath, move it to dest
