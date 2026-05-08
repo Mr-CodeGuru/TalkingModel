@@ -45,6 +45,13 @@ try:
 except ImportError:
     pass # Fallback for Windows or systems without readline
 
+try:
+    from prompt_toolkit import prompt
+    from prompt_toolkit.completion import WordCompleter
+    USE_PROMPT_TOOLKIT = True
+except ImportError:
+    USE_PROMPT_TOOLKIT = False
+
 from utils.paths import RECORD_FILE, ensure_directories
 from utils.model_manager import (
     ensure_gguf_model,
@@ -432,7 +439,12 @@ def main():
     if not is_voice_mode:
         try:
             while True:
-                user_text = input(f"{Style.BOLD}{Style.H_GRN}> You:{Style.RESET} ")
+                if USE_PROMPT_TOOLKIT:
+                    completer = WordCompleter(['/help', '/model', '/voice', '/quota', '/session', '/additions', '/exit'])
+                    user_text = prompt('> You: ', completer=completer)
+                else:
+                    user_text = input(f"{Style.BOLD}{Style.H_GRN}> You:{Style.RESET} ")
+                    
                 if not user_text.strip(): continue
                 
                 if user_text.startswith('/'):

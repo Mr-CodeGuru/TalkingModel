@@ -1,12 +1,6 @@
 # TalkingModel — Python Dependencies
 # Cross-platform minimal requirements.
 # Generated: 2026-05-08
-#
-# Install with:
-#   pip install -r requirements.txt
-#
-# On macOS, also run:
-#   pip install pyobjc>=12.0   (optional — improves native TTS compatibility)
 
 # ── Core LLM runtime ──────────────────────────────────────────────────────────
 llama-cpp-python>=0.3.16
@@ -30,3 +24,6 @@ huggingface-hub>=0.23.0
 # ── Environment & Config ──────────────────────────────────────────────────────
 python-dotenv>=1.0.0
 PyYAML>=6.0
+
+# ── Premium CLI UI (Auto-complete & arrow key support) ───────────────────────
+prompt-toolkit>=3.0.43
