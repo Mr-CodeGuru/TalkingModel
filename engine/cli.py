@@ -48,6 +48,7 @@ except ImportError:
 try:
     from prompt_toolkit import prompt
     from prompt_toolkit.completion import WordCompleter
+    from prompt_toolkit.formatted_text import ANSI
     USE_PROMPT_TOOLKIT = True
 except ImportError:
     USE_PROMPT_TOOLKIT = False
@@ -205,8 +206,13 @@ def load_vosk(vosk_path):
     current_vosk_path = vosk_path
     print(f"{Style.H_GRN}✓ Vosk Loaded.{Style.RESET}")
 
+import textwrap
+
 def speak(text: str):
-    print(f"{Style.BOLD}{Style.H_CYN}> Assistant:{Style.RESET} {text}")
+    # Use the boxed theme for Assistant responses
+    wrapped_lines = textwrap.wrap(text, width=60)
+    print_box("Assistant", wrapped_lines, Style.H_CYN)
+    
     if not is_voice_mode:
         return
         
@@ -458,7 +464,7 @@ def main():
             while True:
                 if USE_PROMPT_TOOLKIT:
                     completer = WordCompleter(['/help', '/model', '/voice', '/quota', '/session', '/additions', '/exit'])
-                    user_text = prompt('> You: ', completer=completer)
+                    user_text = prompt(ANSI(f"{Style.BOLD}{Style.H_GRN}> You:{Style.RESET} "), completer=completer)
                 else:
                     user_text = input(f"{Style.BOLD}{Style.H_GRN}> You:{Style.RESET} ")
                     
