@@ -28,8 +28,7 @@ Runs entirely on your local machine — no cloud, no API keys, no internet requi
 ```
 TalkingModel/
 ├── engine/                  # Core AI engine
-│   ├── launcher.py          # Interactive TUI launcher
-│   └── main.py              # Voice/text processing loop
+│   └── cli.py               # Unified master app (Menu + Chat + Commands)
 │
 ├── utils/                   # Utilities
 │   ├── model_manager.py     # HF download + local cache system
@@ -40,10 +39,8 @@ TalkingModel/
 │   └── models.yaml          # Declarative model registry (add models here)
 │
 ├── scripts/
-│   ├── setup.sh             # First-run setup (macOS / Linux)
-│   ├── setup.bat            # First-run setup (Windows)
-│   ├── launch.sh            # Start the assistant (macOS / Linux)
-│   ├── launch.bat           # Start the assistant (Windows)
+│   ├── launch.sh            # Master launch script (Mac/Linux)
+│   ├── launch.bat           # Master launch script (Windows)
 │   └── test_tts.py          # TTS smoke test
 │
 ├── models/                  # ← gitignored, auto-populated on first run
@@ -65,50 +62,17 @@ TalkingModel/
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- **Python 3.9 or higher** — [Download](https://python.org/downloads)
-- **Microphone** (for voice mode only)
-- **Internet connection** on first run (to download models — ~1.3 GB total for defaults)
-
-### 1. Clone the repository
+To get started with TalkingModel, simply copy and paste the following "One-Liner" command into your terminal. This will clone the repository and initiate the smart setup.
 
 ```bash
-git clone https://github.com/Mr-CodeGuru/TalkingModel.git
-cd TalkingModel
+git clone https://github.com/Mr-CodeGuru/TalkingModel.git && cd TalkingModel && bash scripts/launch.sh
 ```
 
-### 2. Run setup (creates venv + downloads models)
-
-**macOS / Linux:**
-```bash
-bash scripts/setup.sh
-```
-
-**Windows:**
-```cmd
-scripts\setup.bat
-```
-
-This will:
-- Create a `.venv/` virtual environment
-- Install all Python dependencies
-- Download the default LLM model from Hugging Face (~1.2 GB)
-- Download the default Vosk STT model (~40 MB)
-
-### 3. Launch the assistant
-
-**macOS / Linux:**
-```bash
-bash scripts/launch.sh
-```
-
-**Windows:**
-```cmd
-scripts\launch.bat
-```
-
-A menu appears — select your **interaction mode** (Voice / Text) and the assistant starts.
+### What happens next?
+1. **Trust Prompt**: The script will ask if you trust the folder and wish to proceed with installation.
+2. **Automatic Environment**: It builds a Python virtual environment and installs dependencies automatically.
+3. **Global Command (Optional)**: It will ask if you want to create a global `tm` command so you can launch the app by just typing `tm` from anywhere!
+4. **Model Downloads**: Finally, it lets you select Text or Voice mode, and starts downloading the models with clean progress indicators.
 
 ---
 
