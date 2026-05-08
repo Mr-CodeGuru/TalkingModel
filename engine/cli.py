@@ -235,6 +235,7 @@ def handle_command(cmd_text: str):
         print("  /voice      - Toggle voice/text mode")
         print("  /quota      - Check context window usage")
         print("  /session    - Clear chat memory")
+        print("  /additions  - Register external custom models")
         print("  /exit       - Quit the application\n")
         
     elif command == "/quota":
@@ -277,6 +278,58 @@ def handle_command(cmd_text: str):
         else:
             load_llm(selected_path)
             print(f"{Style.H_GRN}✓ Switched model successfully.{Style.RESET}\n")
+
+    elif command == "/additions":
+        print(f"\n{Style.BOLD}Add Custom Models{Style.RESET}")
+        modes = ["1. Add LLM Model (.gguf file)", "2. Add Vosk STT Model (folder)"]
+        idx = select_menu("What would you like to add?", modes)
+        
+        if idx == 0:
+            path_str = input(f"{Style.CYN}Enter absolute path to the .gguf file:{Style.RESET} ").strip()
+            p = Path(path_str)
+            if not p.is_file() or not p.name.endswith('.gguf'):
+                print(f"{Style.RED}Error: File not found or not a .gguf file.{Style.RESET}\n")
+                return
+            
+            # Symlink it
+            dest = Path(_PROJECT_ROOT) / "models" / "gguf" / p.name
+            try:
+                if dest.exists():
+                    print(f"{Style.YEL}A link or file with this name already exists in models/gguf/.{Style.RESET}\n")
+                    return
+                os.symlink(p.resolve(), dest)
+                print(f"{Style.H_GRN}✓ Linked {p.name} into models/gguf/.{Style.RESET}\n")
+                print(f"{Style.CYN}It is now available in the /model list.{Style.RESET}\n")
+            except Exception as e:
+                print(f"{Style.RED}Error creating symlink: {e}{Style.RESET}\n")
+                
+        else:
+            path_str = input(f"{Style.CYN}Enter absolute path to the Vosk model directory:{Style.RESET} ").strip()
+            p = Path(path_str)
+            if not p.is_dir():
+                print(f"{Style.RED}Error: Directory not found.{Style.RESET}\n")
+                return
+                
+            label = input(f"{Style.CYN}Enter a label for this model (e.g., 'Custom Large'):{Style.RESET} ").strip()
+            
+            # Append to models.yaml
+            models_yaml_path = Path(_PROJECT_ROOT) / "config" / "models.yaml"
+            try:
+                with open(models_yaml_path, "a") as f:
+                    f.write(f"""
+    - id: {p.name}
+      label: "{label} (Custom Local)"
+      dirname: {p.name}
+      default: false
+""")
+                # Symlink it
+                dest = Path(_PROJECT_ROOT) / "models" / "vosk" / p.name
+                if not dest.exists():
+                    os.symlink(p.resolve(), dest)
+                print(f"{Style.H_GRN}✓ Registered in models.yaml and linked to models/vosk/.{Style.RESET}\n")
+                print(f"{Style.CYN}Restart the application or switch mode to use it.{Style.RESET}\n")
+            except Exception as e:
+                print(f"{Style.RED}Error: {e}{Style.RESET}\n")
             
     elif command in ("/exit", "/quit"):
         print(f"\n{Style.YEL}Goodbye!{Style.RESET}")
