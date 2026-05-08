@@ -59,12 +59,12 @@ if [ ! -d "$VENV" ]; then
     source .venv/bin/activate
     
     echo -e "${CYN}▶ Installing Python dependencies (this may take a minute)...${RESET}"
-    pip install --upgrade pip --quiet
-    pip install -r requirements.txt --quiet
+    pip install --upgrade pip --no-cache-dir --quiet
+    pip install -r requirements.txt --no-cache-dir --quiet
     
     if [[ "$(uname -s)" == "Darwin" ]]; then
         echo -e "${CYN}▶ Installing macOS voice support...${RESET}"
-        pip install "pyobjc>=12.0" --quiet || true
+        pip install "pyobjc>=12.0" --no-cache-dir --quiet || true
     fi
     
     echo -e "${GRN}✓ Environment set up successfully!${RESET}\n"
