@@ -82,7 +82,9 @@ if [ ! -d "$VENV" ]; then
         fi
         
         if [ -n "$SHELL_PROFILE" ]; then
-            echo "alias tm='${PROJECT_ROOT}/scripts/launch.sh'" >> "$SHELL_PROFILE"
+            # Escape spaces in the path for the alias
+            PROJECT_ROOT_ESCAPED="${PROJECT_ROOT// /\\ }"
+            echo "alias tm='${PROJECT_ROOT_ESCAPED}/scripts/launch.sh'" >> "$SHELL_PROFILE"
             echo -e "${GRN}✓ Alias 'tm' added to $SHELL_PROFILE${RESET}"
             echo -e "${YEL}👉 Please run 'source $SHELL_PROFILE' or restart terminal to use 'tm' anywhere.${RESET}\n"
         fi
