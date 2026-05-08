@@ -16,14 +16,110 @@ models:
       size_gb: 1.2
       default: true
 
-    # Template for adding future models:
-    # - id: MyModel-7B-Q4
-    #   label: "My Model 7B (Q4_K_M — balanced, 4.1 GB)"
-    #   filename: my-model-7b-q4.gguf
-    #   hf_repo: MrDevCoder01/TalkingModel
-    #   hf_path: gguf/my-model-7b-q4.gguf
-    #   size_gb: 4.1
-    #   default: false
+    - id: TM-0.1B-Q80
+      label: "TM 0.1B (Q8_0 — 132 MB)"
+      filename: TM-0.1B-Q80.gguf
+      hf_repo: MrDevCoder01/TalkingModel
+      hf_path: gguf/TM-0.1B-Q80.gguf
+      size_gb: 0.13
+      default: false
+
+    - id: TM-0.1B-Q6K
+      label: "TM 0.1B (Q6_K — 103 MB)"
+      filename: TM-0.1B-Q6K.gguf
+      hf_repo: MrDevCoder01/TalkingModel
+      hf_path: gguf/TM-0.1B-Q6K.gguf
+      size_gb: 0.10
+      default: false
+
+    - id: TM-0.1B-Q5KM
+      label: "TM 0.1B (Q5_K_M — 94 MB)"
+      filename: TM-0.1B-Q5KM.gguf
+      hf_repo: MrDevCoder01/TalkingModel
+      hf_path: gguf/TM-0.1B-Q5KM.gguf
+      size_gb: 0.09
+      default: false
+
+    - id: TM-0.1B-Q5KS
+      label: "TM 0.1B (Q5_K_S — 92 MB)"
+      filename: TM-0.1B-Q5KS.gguf
+      hf_repo: MrDevCoder01/TalkingModel
+      hf_path: gguf/TM-0.1B-Q5KS.gguf
+      size_gb: 0.09
+      default: false
+
+    - id: TM-0.1B-Q51
+      label: "TM 0.1B (Q5_1 — 97 MB)"
+      filename: TM-0.1B-Q51.gguf
+      hf_repo: MrDevCoder01/TalkingModel
+      hf_path: gguf/TM-0.1B-Q51.gguf
+      size_gb: 0.10
+      default: false
+
+    - id: TM-0.1B-Q4KM
+      label: "TM 0.1B (Q4_K_M — 85 MB)"
+      filename: TM-0.1B-Q4KM.gguf
+      hf_repo: MrDevCoder01/TalkingModel
+      hf_path: gguf/TM-0.1B-Q4KM.gguf
+      size_gb: 0.08
+      default: false
+
+    - id: TM-0.1B-Q4KS
+      label: "TM 0.1B (Q4_K_S — 82 MB)"
+      filename: TM-0.1B-Q4KS.gguf
+      hf_repo: MrDevCoder01/TalkingModel
+      hf_path: gguf/TM-0.1B-Q4KS.gguf
+      size_gb: 0.08
+      default: false
+
+    - id: TM-0.1B-Q41
+      label: "TM 0.1B (Q4_1 — 87 MB)"
+      filename: TM-0.1B-Q41.gguf
+      hf_repo: MrDevCoder01/TalkingModel
+      hf_path: gguf/TM-0.1B-Q41.gguf
+      size_gb: 0.09
+      default: false
+
+    - id: TM-0.1B-Q40
+      label: "TM 0.1B (Q4_0 — 82 MB)"
+      filename: TM-0.1B-Q40.gguf
+      hf_repo: MrDevCoder01/TalkingModel
+      hf_path: gguf/TM-0.1B-Q40.gguf
+      size_gb: 0.08
+      default: false
+
+    - id: TM-0.1B-Q3KL
+      label: "TM 0.1B (Q3_K_L — 77 MB)"
+      filename: TM-0.1B-Q3KL.gguf
+      hf_repo: MrDevCoder01/TalkingModel
+      hf_path: gguf/TM-0.1B-Q3KL.gguf
+      size_gb: 0.08
+      default: false
+
+    - id: TM-0.1B-Q3KM
+      label: "TM 0.1B (Q3_K_M — 75 MB)"
+      filename: TM-0.1B-Q3KM.gguf
+      hf_repo: MrDevCoder01/TalkingModel
+      hf_path: gguf/TM-0.1B-Q3KM.gguf
+      size_gb: 0.07
+      default: false
+
+    - id: TM-0.1B-Q3KS
+      label: "TM 0.1B (Q3_K_S — 71 MB)"
+      filename: TM-0.1B-Q3KS.gguf
+      hf_repo: MrDevCoder01/TalkingModel
+      hf_path: gguf/TM-0.1B-Q3KS.gguf
+      size_gb: 0.07
+      default: false
+
+    - id: TM-0.1B-Q2K
+      label: "TM 0.1B (Q2_K — 65 MB)"
+      filename: TM-0.1B-Q2K.gguf
+      hf_repo: MrDevCoder01/TalkingModel
+      hf_path: gguf/TM-0.1B-Q2K.gguf
+      size_gb: 0.06
+      default: false
+
 
   # ── Vosk Speech-to-Text Models ───────────────────────────────────────────────
   vosk:
@@ -38,10 +134,8 @@ models:
     - id: large
       label: "English Large (~2.7 GB, highest accuracy)"
       dirname: vosk-model-en-us-0.22
-      # Stored on Hugging Face (uploaded by user)
-      hf_repo: MrDevCoder01/TalkingModel
-      hf_path: vosk/vosk-model-en-us-0.22.zip
-      size_gb: 2.7
+      url: https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip
+      size_mb: 2873
       default: false
 
     # Template for adding more languages:

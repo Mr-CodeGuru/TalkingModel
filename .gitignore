@@ -41,6 +41,7 @@ models/vosk/vosk-model-*/
 # ── Legacy model directories (old layout) ────────────────────────────────────
 TM-GGUF/*.gguf
 TM-Engine/ENGINE/vosk-model-*/
+drive-download/
 
 # ── llama.cpp source tree (not needed at runtime — pip installs llama-cpp-python)
 llama.cpp/

@@ -17,4 +17,4 @@ if not exist "%PROJECT_ROOT%\.venv\" (
 )
 
 call "%PROJECT_ROOT%\.venv\Scripts\activate.bat"
-python "%PROJECT_ROOT%\engine\launcher.py" %*
+python "%PROJECT_ROOT%\engine\cli.py" %*
