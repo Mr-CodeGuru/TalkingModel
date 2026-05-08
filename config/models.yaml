@@ -1,0 +1,53 @@
+# =============================================================================
+#  TalkingModel — Model Registry
+#
+#  Add new models here. The model_manager.py reads this file automatically.
+#  No code changes needed to support additional models.
+# =============================================================================
+
+models:
+  # ── LLM Models (GGUF format, run via llama-cpp-python) ─────────────────────
+  llm:
+    - id: TM-1B-Q80
+      label: "TM 1B (Q8_0 — highest quality, 1.2 GB)"
+      filename: TM-1B-Q80.gguf
+      hf_repo: MrDevCoder01/TalkingModel
+      hf_path: gguf/TM-1B-Q80.gguf      # path inside the HF repo
+      size_gb: 1.2
+      default: true
+
+    # Template for adding future models:
+    # - id: MyModel-7B-Q4
+    #   label: "My Model 7B (Q4_K_M — balanced, 4.1 GB)"
+    #   filename: my-model-7b-q4.gguf
+    #   hf_repo: MrDevCoder01/TalkingModel
+    #   hf_path: gguf/my-model-7b-q4.gguf
+    #   size_gb: 4.1
+    #   default: false
+
+  # ── Vosk Speech-to-Text Models ───────────────────────────────────────────────
+  vosk:
+    - id: small
+      label: "English Small (~40 MB, fast, good accuracy)"
+      dirname: vosk-model-small-en-us-0.15
+      # Downloaded directly from alphacephei.com — no HF needed
+      url: https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
+      size_mb: 40
+      default: true
+
+    - id: large
+      label: "English Large (~2.7 GB, highest accuracy)"
+      dirname: vosk-model-en-us-0.22
+      # Stored on Hugging Face (uploaded by user)
+      hf_repo: MrDevCoder01/TalkingModel
+      hf_path: vosk/vosk-model-en-us-0.22.zip
+      size_gb: 2.7
+      default: false
+
+    # Template for adding more languages:
+    # - id: small-fr
+    #   label: "French Small (~39 MB)"
+    #   dirname: vosk-model-small-fr-0.22
+    #   url: https://alphacephei.com/vosk/models/vosk-model-small-fr-0.22.zip
+    #   size_mb: 39
+    #   default: false

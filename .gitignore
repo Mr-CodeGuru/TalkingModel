@@ -1,0 +1,76 @@
+# =============================================================================
+#  TalkingModel — .gitignore
+#  Keep GitHub lightweight: models live on Hugging Face, not here.
+# =============================================================================
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+*.egg-info/
+dist/
+build/
+*.egg
+MANIFEST
+
+# ── Virtual Environments ──────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+tm-env/
+TM-Engine/tm-env/
+
+# ── Environment / Secrets ─────────────────────────────────────────────────────
+.env
+*.env.local
+*.env.*.local
+
+# ── Model Files (stored on Hugging Face, downloaded on first run) ─────────────
+models/gguf/*.gguf
+models/vosk/vosk-model-*/
+# Keep the placeholder files
+!models/gguf/.gitkeep
+!models/vosk/.gitkeep
+
+# ── Legacy model directories (old layout) ────────────────────────────────────
+TM-GGUF/*.gguf
+TM-Engine/ENGINE/vosk-model-*/
+
+# ── llama.cpp source tree (not needed at runtime — pip installs llama-cpp-python)
+llama.cpp/
+
+# ── Logs / Conversation Records ───────────────────────────────────────────────
+logs/
+record.txt
+!logs/.gitkeep
+
+# ── OS Artifacts ──────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# ── IDE / Editor ──────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Build / Cache ─────────────────────────────────────────────────────────────
+.cache/
+.mypy_cache/
+.pytest_cache/
+htmlcov/
+.coverage
+*.cover
