@@ -209,22 +209,7 @@ def load_vosk(vosk_path):
 import textwrap
 
 def speak(text: str):
-    # Use the Gemini style (clean horizontal lines and sparkles)
-    columns, _ = shutil.get_terminal_size(fallback=(80, 24))
-    width = columns - 5
-    if width < 40: width = 40
-    
-    # Print Header
-    header = "✨ Assistant"
-    print(f"{Style.H_CYN}{header} " + "━" * (width - 12) + Style.RESET)
-    
-    # Wrap and print text with indentation
-    wrapped_lines = textwrap.wrap(text, width=columns - 5)
-    for line in wrapped_lines:
-        print(f"  {line}")
-        
-    # Print Footer
-    print(f"{Style.H_CYN}" + "━" * width + Style.RESET + "\n")
+    print(f"{Style.BOLD}{Style.H_CYN}> Assistant:{Style.RESET} {text}")
     
     if not is_voice_mode:
         return
@@ -475,22 +460,11 @@ def main():
     if not is_voice_mode:
         try:
             while True:
-                columns, _ = shutil.get_terminal_size(fallback=(80, 24))
-                width = columns - 5
-                if width < 40: width = 40
-                
-                # Print Gemini-style Header for User
-                header = "👤 You"
-                print(f"{Style.H_GRN}{header} " + "━" * (width - 6) + Style.RESET)
-                
                 if USE_PROMPT_TOOLKIT:
                     completer = WordCompleter(['/help', '/model', '/voice', '/quota', '/session', '/additions', '/exit'])
-                    user_text = prompt(ANSI(f"  "), completer=completer)
+                    user_text = prompt(ANSI(f"{Style.BOLD}{Style.H_GRN}> You:{Style.RESET} "), completer=completer)
                 else:
-                    user_text = input(f"  ")
-                    
-                # Print Footer
-                print(f"{Style.H_GRN}" + "━" * width + Style.RESET)
+                    user_text = input(f"{Style.BOLD}{Style.H_GRN}> You:{Style.RESET} ")
                 
                 if not user_text.strip(): continue
                 
