@@ -467,17 +467,18 @@ def main():
                 width = columns - 5
                 if width < 40: width = 40
                 
-                # Print top of the box before the prompt
-                print(f"{Style.H_GRN}┏━ {Style.BOLD}You{Style.RESET}{Style.H_GRN} " + "━" * (width - 6) + Style.RESET)
+                # Print top of the box before the prompt (with top-right corner)
+                print(f"{Style.H_GRN}┏━ {Style.BOLD}You{Style.RESET}{Style.H_GRN} " + "━" * (width - 8) + "┓" + Style.RESET)
                 
                 if USE_PROMPT_TOOLKIT:
                     completer = WordCompleter(['/help', '/model', '/voice', '/quota', '/session', '/additions', '/exit'])
-                    user_text = prompt(ANSI(f"{Style.H_GRN}┃{Style.RESET} "), completer=completer)
+                    # Use rprompt for the right border!
+                    user_text = prompt(ANSI(f"{Style.H_GRN}┃{Style.RESET} "), rprompt=ANSI(f"{Style.H_GRN}┃{Style.RESET}"), completer=completer)
                 else:
                     user_text = input(f"{Style.H_GRN}┃{Style.RESET} ")
                     
-                # Print bottom of the box after they hit enter
-                print(f"{Style.H_GRN}┗" + "━" * (width - 1) + Style.RESET)
+                # Print bottom of the box after they hit enter (with bottom-right corner)
+                print(f"{Style.H_GRN}┗" + "━" * (width - 2) + "┛" + Style.RESET)
                 
                 if not user_text.strip(): continue
                 
