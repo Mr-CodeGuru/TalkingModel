@@ -81,6 +81,19 @@ class Style:
     H_GRN = "\033[92m"
     H_MAG = "\033[95m"
 
+def print_box(title: str, lines: list[str], color: str = Style.H_CYN):
+    """Prints a beautiful Shopify-style box in the terminal."""
+    # Calculate width
+    width = max(len(title) + 6, 50)
+    for line in lines:
+        # Strip ANSI codes for length calculation if needed, but for simple strings len is fine
+        width = max(width, len(line) + 4)
+        
+    print(f"{color}┏━ {Style.BOLD}{title}{Style.RESET}{color} " + "━" * (width - len(title) - 3) + Style.RESET)
+    for line in lines:
+        print(f"{color}┃{Style.RESET} {line}")
+    print(f"{color}┗" + "━" * (width + 1) + Style.RESET)
+
 # ── Global State ─────────────────────────────────────────────────────────────
 chat_memory: list[tuple[str, str]] = []
 MAX_MEMORY_TURNS = 4
@@ -248,14 +261,16 @@ def handle_command(cmd_text: str):
     command = parts[0].lower()
     
     if command == "/help":
-        print(f"\n{Style.BOLD}Available Commands:{Style.RESET}")
-        print("  /help       - Show this help message")
-        print("  /model      - Switch LLM models")
-        print("  /voice      - Toggle voice/text mode")
-        print("  /quota      - Check context window usage")
-        print("  /session    - Clear chat memory")
-        print("  /additions  - Register external custom models")
-        print("  /exit       - Quit the application\n")
+        lines = [
+            " /help       - Show this help message",
+            " /model      - Switch LLM models",
+            " /voice      - Toggle voice/text mode",
+            " /quota      - Check context window usage",
+            " /session    - Manage chat sessions",
+            " /additions  - Register external custom models",
+            " /exit       - Quit the application"
+        ]
+        print_box("Available Commands", lines, Style.H_CYN)
         
     elif command == "/quota":
         # Estimate tokens based on characters (rough but functional without tiktoken)
@@ -270,10 +285,12 @@ def handle_command(cmd_text: str):
         filled_len = int(bar_len * min(percentage, 100) / 100)
         bar = '█' * filled_len + '░' * (bar_len - filled_len)
         
-        print(f"\n{Style.BOLD}Context Quota Usage:{Style.RESET}")
-        print(f"  Memory Turns: {len(chat_memory)}/{MAX_MEMORY_TURNS}")
-        print(f"  Est. Tokens:  {estimated_tokens}/2048 ({percentage:.1f}%)")
-        print(f"  Status:       [{bar}]\n")
+        lines = [
+            f"Memory Turns: {len(chat_memory)}/{MAX_MEMORY_TURNS}",
+            f"Est. Tokens:  {estimated_tokens}/2048 ({percentage:.1f}%)",
+            f"Status:       [{bar}]"
+        ]
+        print_box("Context Quota Usage", lines, Style.H_MAG)
         
     elif command == "/session":
         session_opts = [
