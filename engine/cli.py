@@ -209,10 +209,22 @@ def load_vosk(vosk_path):
 import textwrap
 
 def speak(text: str):
-    # Use the boxed theme for Assistant responses
+    # Use the Gemini style (clean horizontal lines and sparkles)
     columns, _ = shutil.get_terminal_size(fallback=(80, 24))
+    width = columns - 5
+    if width < 40: width = 40
+    
+    # Print Header
+    header = "✨ Assistant"
+    print(f"{Style.H_CYN}{header} " + "━" * (width - 12) + Style.RESET)
+    
+    # Wrap and print text with indentation
     wrapped_lines = textwrap.wrap(text, width=columns - 5)
-    print_box("Assistant", wrapped_lines, Style.H_CYN)
+    for line in wrapped_lines:
+        print(f"  {line}")
+        
+    # Print Footer
+    print(f"{Style.H_CYN}" + "━" * width + Style.RESET + "\n")
     
     if not is_voice_mode:
         return
@@ -467,18 +479,18 @@ def main():
                 width = columns - 5
                 if width < 40: width = 40
                 
-                # Print top of the box before the prompt (with top-right corner)
-                print(f"{Style.H_GRN}┏━ {Style.BOLD}You{Style.RESET}{Style.H_GRN} " + "━" * (width - 8) + "┓" + Style.RESET)
+                # Print Gemini-style Header for User
+                header = "👤 You"
+                print(f"{Style.H_GRN}{header} " + "━" * (width - 6) + Style.RESET)
                 
                 if USE_PROMPT_TOOLKIT:
                     completer = WordCompleter(['/help', '/model', '/voice', '/quota', '/session', '/additions', '/exit'])
-                    # Use rprompt for the right border!
-                    user_text = prompt(ANSI(f"{Style.H_GRN}┃{Style.RESET} "), rprompt=ANSI(f"{Style.H_GRN}┃{Style.RESET}"), completer=completer)
+                    user_text = prompt(ANSI(f"  "), completer=completer)
                 else:
-                    user_text = input(f"{Style.H_GRN}┃{Style.RESET} ")
+                    user_text = input(f"  ")
                     
-                # Print bottom of the box after they hit enter (with bottom-right corner)
-                print(f"{Style.H_GRN}┗" + "━" * (width - 2) + "┛" + Style.RESET)
+                # Print Footer
+                print(f"{Style.H_GRN}" + "━" * width + Style.RESET)
                 
                 if not user_text.strip(): continue
                 
