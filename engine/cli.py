@@ -269,16 +269,47 @@ def handle_command(cmd_text: str):
         print(f"  Status:       [{bar}]\n")
         
     elif command == "/session":
-        if chat_memory:
-            # Save the current session before clearing
-            session_file = Path(_PROJECT_ROOT) / "logs" / f"session_{int(time.time())}.txt"
-            with open(session_file, "w") as f:
-                for u, a in chat_memory:
-                    f.write(f"User: {u}\nAssistant: {a}\n\n")
-            print(f"\n{Style.H_GRN}✓ Session saved to logs/{session_file.name}{Style.RESET}")
+        session_opts = [
+            "🆕 Start New Session (Saves current)",
+            "🧹 Clear Current Session (No save)",
+            "📂 Load/Continue Previous Session"
+        ]
+        s_idx = select_menu("Session Management:", session_opts)
+        
+        if s_idx == 0:
+            if chat_memory:
+                # Save as JSON so we can reload it later
+                session_file = Path(_PROJECT_ROOT) / "logs" / f"session_{int(time.time())}.json"
+                with open(session_file, "w") as f:
+                    json.dump(chat_memory, f, indent=2)
+                print(f"\n{Style.H_GRN}✓ Session saved to logs/{session_file.name}{Style.RESET}")
+            chat_memory = []
+            print(f"{Style.H_GRN}✓ New session started. Memory is fresh.{Style.RESET}\n")
             
-        chat_memory = []
-        print(f"{Style.H_GRN}✓ New session started. Memory is fresh.{Style.RESET}\n")
+        elif s_idx == 1:
+            chat_memory = []
+            print(f"\n{Style.H_GRN}✓ Session cleared without saving.{Style.RESET}\n")
+            
+        elif s_idx == 2:
+            # Scan for saved sessions
+            log_dir = Path(_PROJECT_ROOT) / "logs"
+            session_files = sorted(list(log_dir.glob("session_*.json")), reverse=True)
+            
+            if not session_files:
+                print(f"\n{Style.YEL}No saved sessions found in logs/.{Style.RESET}\n")
+                return
+                
+            file_options = [f.name for f in session_files]
+            f_idx = select_menu("Select a session to continue:", file_options)
+            selected_file = session_files[f_idx]
+            
+            try:
+                with open(selected_file, "r") as f:
+                    chat_memory = json.load(f)
+                print(f"\n{Style.H_GRN}✓ Loaded session from {selected_file.name}{Style.RESET}")
+                print(f"{Style.CYN}Memory populated with {len(chat_memory)} turns.{Style.RESET}\n")
+            except Exception as e:
+                print(f"\n{Style.RED}Error loading session: {e}{Style.RESET}\n")
         
     elif command == "/voice":
         is_voice_mode = not is_voice_mode
