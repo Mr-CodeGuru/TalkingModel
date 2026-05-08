@@ -463,25 +463,27 @@ def main():
     if not is_voice_mode:
         try:
             while True:
+                columns, _ = shutil.get_terminal_size(fallback=(80, 24))
+                width = columns - 5
+                if width < 40: width = 40
+                
+                # Print top of the box before the prompt
+                print(f"{Style.H_GRN}┏━ {Style.BOLD}You{Style.RESET}{Style.H_GRN} " + "━" * (width - 6) + Style.RESET)
+                
                 if USE_PROMPT_TOOLKIT:
                     completer = WordCompleter(['/help', '/model', '/voice', '/quota', '/session', '/additions', '/exit'])
-                    user_text = prompt(ANSI(f"{Style.BOLD}{Style.H_GRN}> You:{Style.RESET} "), completer=completer)
+                    user_text = prompt(ANSI(f"{Style.H_GRN}┃{Style.RESET} "), completer=completer)
                 else:
-                    user_text = input(f"{Style.BOLD}{Style.H_GRN}> You:{Style.RESET} ")
+                    user_text = input(f"{Style.H_GRN}┃{Style.RESET} ")
                     
+                # Print bottom of the box after they hit enter
+                print(f"{Style.H_GRN}┗" + "━" * (width - 1) + Style.RESET)
+                
                 if not user_text.strip(): continue
                 
                 if user_text.startswith('/'):
                     handle_command(user_text)
                 else:
-                    # Clear the prompt line typed by the user to avoid duplication
-                    print("\033[F\033[K", end="")
-                    
-                    # Print user's text in a box
-                    columns, _ = shutil.get_terminal_size(fallback=(80, 24))
-                    wrapped_user = textwrap.wrap(user_text, width=columns - 5)
-                    print_box("You", wrapped_user, Style.H_GRN)
-                    
                     response = process_text(user_text)
                     speak(response)
         except KeyboardInterrupt:
