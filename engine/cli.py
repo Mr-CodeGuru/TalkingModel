@@ -87,7 +87,7 @@ def print_box(title: str, lines: list[str], color: str = Style.H_CYN):
     """Prints a beautiful Shopify-style box in the terminal."""
     # Get terminal width dynamically
     columns, _ = shutil.get_terminal_size(fallback=(80, 24))
-    width = columns - 2
+    width = columns - 5
     if width < 40: width = 40
         
     print(f"{color}┏━ {Style.BOLD}{title}{Style.RESET}{color} " + "━" * (width - len(title) - 3) + Style.RESET)
@@ -211,7 +211,7 @@ import textwrap
 def speak(text: str):
     # Use the boxed theme for Assistant responses
     columns, _ = shutil.get_terminal_size(fallback=(80, 24))
-    wrapped_lines = textwrap.wrap(text, width=columns - 4)
+    wrapped_lines = textwrap.wrap(text, width=columns - 5)
     print_box("Assistant", wrapped_lines, Style.H_CYN)
     
     if not is_voice_mode:
@@ -474,9 +474,12 @@ def main():
                 if user_text.startswith('/'):
                     handle_command(user_text)
                 else:
+                    # Clear the prompt line typed by the user to avoid duplication
+                    print("\033[F\033[K", end="")
+                    
                     # Print user's text in a box
                     columns, _ = shutil.get_terminal_size(fallback=(80, 24))
-                    wrapped_user = textwrap.wrap(user_text, width=columns - 4)
+                    wrapped_user = textwrap.wrap(user_text, width=columns - 5)
                     print_box("You", wrapped_user, Style.H_GRN)
                     
                     response = process_text(user_text)
