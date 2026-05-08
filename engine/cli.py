@@ -199,7 +199,8 @@ def load_llm(model_path):
 
 def load_vosk(vosk_path):
     global vosk_model, rec, current_vosk_path
-    from vosk import Model, KaldiRecognizer
+    from vosk import Model, KaldiRecognizer, SetLogLevel
+    SetLogLevel(-1)  # Disable verbose C++ logs
     print(f"{Style.H_MAG}Loading Vosk STT...{Style.RESET}")
     vosk_model = Model(vosk_path)
     rec = KaldiRecognizer(vosk_model, 16000)
